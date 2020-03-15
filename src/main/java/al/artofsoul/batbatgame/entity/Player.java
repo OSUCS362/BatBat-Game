@@ -57,7 +57,7 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
     protected long time;
     // actions
     protected boolean dashing;
-
+    private int getHitLossHp;
     protected boolean attacking;
     protected boolean upattacking;
     protected boolean charging;
@@ -104,7 +104,7 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
 
         facingRight = true;
 
-        lives = 3;
+        lives = 5;
         health = maxHealth = 5;
 
         // load sprites
@@ -137,11 +137,13 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
 
         setAnimation(IDLE_ANIM);
 
-        /*JukeBox.load("/SFX/playerjump.mp3", PLAYERJUMP_MUSIC_NAME);
+/*
+        JukeBox.load("/SFX/playerjump.mp3", PLAYERJUMP_MUSIC_NAME);
         JukeBox.load("/SFX/playerlands.mp3", "playerlands");
         JukeBox.load("/SFX/playerattack.mp3", PLAYERATTACK_MUSIC_NAME);
         JukeBox.load("/SFX/playerhit.mp3", "playerhit");
         JukeBox.load("/SFX/playercharge.mp3", "playercharge");*/
+
 
     }
 
@@ -196,7 +198,7 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
             return;
         if (!attacking && !upattacking && !charging) {
             charging = true;
-            JukeBox.play("playercharge");
+            //JukeBox.play("playercharge");
             chargingTick = 0;
         }
     }
@@ -215,6 +217,10 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
 
     public void setDead() {
         health = 0;
+//        if (getTime() >20 ){
+//            stop();
+//        }
+
         stop();
     }
 
@@ -223,6 +229,12 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
         int seconds = (int) ((time % 3600) / 60);
         return seconds < 10 ? minutes + ":0" + seconds : minutes + ":" + seconds;
     }
+    public String getScoreToString() {
+        int score = getScore();
+        return  "score is:" + score;
+    }
+
+
 
     public long getTime() {
         return time;
@@ -231,12 +243,16 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
     public void setTime(long t) {
         time = t;
     }
+    public void setScore(int i) {
+        score = i;
+    }
 
     public void gainLife() {
         lives++;
     }
 
     public void loseLife() {
+//        System.out.println("******************");
         lives--;
     }
 
@@ -261,7 +277,9 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
             return;
         //JukeBox.play("playerhit");
         stop();
-
+//        System.out.println("===========");
+//        System.out.println(health);
+        getHitLossHp = 50;
         health -= damage;
         if (health < 0)
             health = 0;
@@ -286,6 +304,7 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
 
     public void stop() {
         left = right = up = down = flinching = dashing = jumping = attacking = upattacking = charging = false;
+
     }
 
     protected void getNextPosition() {
@@ -307,14 +326,14 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
         if (jumping && !falling) {
             dy = jumpStart;
             falling = true;
-            JukeBox.play(PLAYERJUMP_MUSIC_NAME);
+            // JukeBox.play(PLAYERJUMP_MUSIC_NAME);
         }
 
         if (doubleJump) {
             dy = doubleJumpStart;
             alreadyDoubleJump = true;
             doubleJump = false;
-            JukeBox.play(PLAYERJUMP_MUSIC_NAME);
+            //JukeBox.play(PLAYERJUMP_MUSIC_NAME);
             for (int i = 0; i < 6; i++) {
                 energyParticles.add(new al.artofsoul.batbatgame.entity.EnergyParticle(tileMap, x, y + cheight / 4.0, al.artofsoul.batbatgame.entity.EnergyParticle.ENERGY_DOWN));
             }
@@ -379,6 +398,7 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
     public void update() {
 
         time++;
+        score++;
 
         // check teleporting
         if (teleporting) {
@@ -391,7 +411,7 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
         checkTileMapCollision();
         setPosition(xtemp, ytemp);
         if (isFalling && !falling) {
-            JukeBox.play("playerlands");
+            //JukeBox.play("playerlands");
         }
         if (dx == 0)
             x = (int) x;
@@ -572,6 +592,11 @@ public class Player extends al.artofsoul.batbatgame.entity.MapObject {
         if (flinching && !knockback && flinchCount % 10 < 5) {
             return;
         }
+        if(getHitLossHp > 0){
+            g.drawString("HP-1", 240, 133);
+            getHitLossHp --;
+        }
+
 
         super.draw(g);
 
