@@ -11,8 +11,8 @@ import java.awt.*;
 
 public class OptionsState extends BasicState {
 
-    //    final ImageIcon howTo = new ImageIcon(getClass().getResource("/Backgrounds/howTo.gif"));
-    final ImageIcon howTo = new ImageIcon(getClass().getResource("/Backgrounds/optionBG2.gif"));
+    final ImageIcon howTo = new ImageIcon(getClass().getResource("/Backgrounds/howTo.gif"));
+    //final ImageIcon howTo = new ImageIcon(getClass().getResource("/Backgrounds/optionBG2.gif"));
 
     public OptionsState(GameStateManager gsm) {
 
@@ -30,13 +30,13 @@ public class OptionsState extends BasicState {
     public void draw(Graphics2D g) {
 
         super.draw(g);
-        g.drawString("How To Play", 140, 133);
+        g.drawString("HowTo Play", 140, 133);
         g.drawString("Back", 140, 148);
 
     }
 
     public void siLuhet() {
-        JOptionPane.showMessageDialog(null, "", "How To Play?", JOptionPane.INFORMATION_MESSAGE, howTo);
+        JOptionPane.showMessageDialog(null, "", "HowTo Play?", JOptionPane.INFORMATION_MESSAGE, howTo);
     }
 
     @Override
