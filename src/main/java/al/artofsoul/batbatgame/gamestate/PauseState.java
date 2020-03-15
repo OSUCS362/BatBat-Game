@@ -12,6 +12,7 @@ import java.awt.*;
 public class PauseState extends GameState {
 
     private Font pauseFont;
+    private Font returnOption;
 
     public PauseState(GameStateManager gsm) {
 
@@ -19,7 +20,7 @@ public class PauseState extends GameState {
 
         // fonts
         pauseFont = new Font("Arial", Font.PLAIN, 12);
-
+        returnOption = new Font("Arial", Font.PLAIN, 11);
     }
 
     @Override
@@ -34,6 +35,8 @@ public class PauseState extends GameState {
         g.setColor(Color.WHITE);
         g.setFont(pauseFont);
         g.drawString("Game Paused", 110, 110);
+        g.setFont(returnOption);
+        g.drawString("Press W to Exit", 113, 130);
     }
 
     @Override
