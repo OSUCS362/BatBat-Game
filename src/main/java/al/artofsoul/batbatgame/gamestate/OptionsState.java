@@ -36,7 +36,7 @@ public class OptionsState extends BasicState {
     }
 
     public void siLuhet() {
-        JOptionPane.showMessageDialog(null, "", "HowTo Play?", JOptionPane.INFORMATION_MESSAGE, howTo);
+        JOptionPane.showMessageDialog(null, "", "HowTo Paly?", JOptionPane.INFORMATION_MESSAGE, howTo);
     }
 
     @Override
